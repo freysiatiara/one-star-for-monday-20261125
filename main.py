@@ -27,6 +27,11 @@ def main():
     with open(path, "w", encoding="utf-8", newline="") as f:
         f.write(text)
     os.chmod(path, 0o644)
+    # Read-back verification: confirm the bytes on disk match the entry.
+    with open(path, "rb") as f:
+        written = f.read()
+    if written != text.encode("utf-8"):
+        raise SystemExit("entry.txt read-back mismatch")
 
 
 if __name__ == "__main__":
